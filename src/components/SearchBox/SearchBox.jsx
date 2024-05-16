@@ -1,22 +1,32 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectNameFilter } from "../../redux/filters/selectors";
-import { changeFilter } from "../../redux/filters/slice"; 
+import {
+  selectNameFilter,
+  selectNumberFilter,
+} from "../../redux/filters/selectors";
+import { changeFilter, changeNumberFilter } from "../../redux/filters/slice";
 
 export default function SearchBox() {
   const dispatch = useDispatch();
   const nameFilter = useSelector(selectNameFilter);
-  const [searchValue, setSearchValue] = useState(nameFilter);
+  const numberFilter = useSelector(selectNumberFilter);
+
+  const [searchValue, setSearchValue] = useState(nameFilter || numberFilter);
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchValue(value);
-    dispatch(changeFilter(value));
+
+    if (!isNaN(value) && value.trim() !== "") {
+      dispatch(changeNumberFilter(value));
+    } else {
+      dispatch(changeFilter(value));
+    }
   };
 
   return (
     <div>
-      <p>Search by name</p>
+      <p>Search by name or by phone</p>
       <input type="text" value={searchValue} onChange={handleSearchChange} />
     </div>
   );
