@@ -1,6 +1,5 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ErrorMessage } from "formik";
 
 axios.defaults.baseURL = "https://connections-api.herokuapp.com";
 
@@ -21,7 +20,7 @@ export const register = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(ErrorMessage);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -34,7 +33,7 @@ export const logIn = createAsyncThunk(
       setAuthHeader(response.data.token);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(ErrorMessage);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -44,7 +43,7 @@ export const logOut = createAsyncThunk("auth.logout", async (_, thunkAPI) => {
     await axios.post("/users/logout");
     clearAuthHeader();
   } catch (error) {
-    return thunkAPI.rejectWithValue(ErrorMessage);
+    return thunkAPI.rejectWithValue(error.message);
   }
 });
 

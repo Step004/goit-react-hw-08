@@ -16,6 +16,7 @@ export default function LoginForm() {
       })
       .catch((error) => {
         console.log(error);
+        toast.error(`${error}!!!`);
       });
 
     actions.resetForm();
