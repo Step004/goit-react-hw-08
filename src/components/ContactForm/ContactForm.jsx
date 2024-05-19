@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { addContact } from "../../redux/contacts/operations";
 
 import css from "./ContactForm.module.css";
+import toast from "react-hot-toast";
 
 export default function ContactForm() {
   const dispatch = useDispatch();
@@ -15,10 +16,18 @@ export default function ContactForm() {
         name: values.username,
         number: values.usernumber,
       })
-    );
+    )
+      .unwrap()
+      .then(() => {
+        toast.success("Contact successfully added!");
+      })
+      .catch((error) => {
+        toast.error(`${error}!!!`);
+      });
     actions.resetForm();
   };
 
+  
   const nameFieldId = nanoid();
   const numberFieldId = nanoid();
 
